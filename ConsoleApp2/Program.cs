@@ -40,13 +40,21 @@ ArrayList Tokenize(string expression)
     return result;
 }
 
-// Main
 
-string input = ReadExpr();
-ArrayList tokens = Tokenize(input);
+Queue queue = new Queue();
+queue.Push("324");
+queue.Push("+8762-78/5");
+queue.Push("69");
+Console.WriteLine(queue.Peek());
+Console.WriteLine("hey man Il uv Taras");
 
-// Console.WriteLine(string.Join("|", tokens));
-for (int index = 0; index < tokens.Count(); index++)
-{
-    Console.WriteLine(tokens.GetAt(index));
-}
+// // Main
+//
+// string input = ReadExpr();
+// ArrayList tokens = Tokenize(input);
+//
+// // Console.WriteLine(string.Join("|", tokens));
+// for (int index = 0; index < tokens.Count(); index++)
+// {
+//     Console.WriteLine(tokens.GetAt(index));
+// }
