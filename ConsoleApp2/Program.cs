@@ -1,12 +1,14 @@
-﻿// namespace ConsoleApp2;
-
-using ConsoleApp2;
-using static ConsoleApp2.ArrayList;
+﻿using ConsoleApp2;
 
 string ReadExpr()
 {
     Console.Write("Enter the math expression: ");
     return Console.ReadLine()!;
+}
+
+bool IsOperator(char token)
+{
+    if (s == '+' || s == '-' || s == '*' || s == '/' || s == '^' || s == '(' || s == ')')
 }
 
 ArrayList Tokenize(string expression)
@@ -31,23 +33,46 @@ ArrayList Tokenize(string expression)
             result.Add(s.ToString());
         }
     }
-
     if (buffer.Length > 0)
     {
         result.Add(buffer);
     }
-
     return result;
 }
 
+int Precedence(string token)
+{
+    switch (token)
+    {
+        case "-" or "+":
+            return 2;
+        case "*" or "/":
+            return 3;
+        case "^":
+            return 4;
+        default:
+            return 0;
+    }
+}
 
-// Main
+ArrayList ToRPN(ArrayList tokens)
+{
+    int number;
+    Queue output = new Queue();
+    foreach (string token in tokens)
+    {
+        if (int.TryParse(token, out number)) {output.Push(token);}
+        else
+        {
+            
+        }
+    }
+
+    return tokens;
+}
+
 
 string input = ReadExpr();
 ArrayList tokens = Tokenize(input);
-
-// Console.WriteLine(string.Join("|", tokens));
-for (int index = 0; index < tokens.Count(); index++)
-{
-    Console.WriteLine(tokens.GetAt(index));
-}
+Console.WriteLine(string.Join("|", tokens));
+ArrayList rpnTokens = ToRPN(tokens);
