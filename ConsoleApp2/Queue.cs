@@ -22,22 +22,23 @@ public class Queue
         }
     }
 
-    public void Pop()
+    public string Pop()
     {
         if (_last == 0)
         {
             Console.WriteLine("Queue is empty");
-            return;
+            return null;
         }
         else
         {
+            string element = _array[0];
             for (int i = 0; i < _last - 1; i++)
             {
                 _array[i] = _array[i + 1];
             }
-
-            _array[_last] = null;
             _last--;
+            _array[_last] = null;
+            return element;
         }
 
     }

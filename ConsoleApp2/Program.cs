@@ -6,9 +6,15 @@ string ReadExpr()
     return Console.ReadLine()!;
 }
 
-bool IsOperator(char token)
+bool IsOperator(string token)
 {
-    if (s == '+' || s == '-' || s == '*' || s == '/' || s == '^' || s == '(' || s == ')')
+    if (token.Equals("+") || token.Equals("-") || token.Equals("*") ||
+        token.Equals("/") || token.Equals("^"))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 ArrayList Tokenize(string expression)
@@ -23,7 +29,7 @@ ArrayList Tokenize(string expression)
             buffer += s;
         }
         
-        else if (s == '+' || s == '-' || s == '*' || s == '/' || s == '^' || s == '(' || s == ')')
+        else if (IsOperator(s.ToString()) || s.Equals('(') || s.Equals(')'))
         {
             if (buffer.Length > 0)
             {
@@ -55,24 +61,44 @@ int Precedence(string token)
     }
 }
 
-ArrayList ToRPN(ArrayList tokens)
+Queue ToRPN(ArrayList tokens)
 {
-    int number;
     Queue output = new Queue();
+    Stack operators = new Stack();
     foreach (string token in tokens)
     {
-        if (int.TryParse(token, out number)) {output.Push(token);}
-        else
+        if (int.TryParse(token, out _)) {output.Push(token);}
+        else if (IsOperator(token))
         {
-            
+            while (operators.Count() > 0 && operators.Peek() != "(" && 
+                   (Precedence(operators.Peek()) > Precedence(token)|| 
+                    Precedence(operators.Peek()) == Precedence(token)))
+            {
+                output.Push(operators.Pop());
+            }
+            operators.Push(token);
         }
+        else if (token.Equals("("))
+        {
+            operators.Push(token);
+        }
+        else if (token.Equals(")"))
+        {
+            while (operators.Count() > 0 && operators.Peek() != "(")
+            {
+                output.Push(operators.Pop());
+            }
+            operators.Pop();
+        }
+
     }
 
-    return tokens;
+    return output;
 }
 
 
 string input = ReadExpr();
 ArrayList tokens = Tokenize(input);
 Console.WriteLine(string.Join("|", tokens));
-ArrayList rpnTokens = ToRPN(tokens);
+Queue rpnTokens = ToRPN(tokens);
+while(rpnTokens.Count() > 0) {Console.WriteLine(rpnTokens.Pop());}

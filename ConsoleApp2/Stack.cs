@@ -20,7 +20,7 @@ public class Stack
         _pointer++;
     }
 
-    public string Pull()
+    public string Pop()
     {
         if (_pointer == 0)
         {
@@ -28,7 +28,7 @@ public class Stack
             return null;
         }
 
-        var value = _array[_pointer];
+        var value = _array[_pointer - 1];
         _pointer--;
         return value;
     }
