@@ -6,7 +6,7 @@ public class Stack
 
     private string[] _array = new string[Capacity];
 
-    private int _pointer;
+    private int _pointer = 0;
 
     public void Push(string value)
     {
@@ -31,5 +31,15 @@ public class Stack
         var value = _array[_pointer];
         _pointer--;
         return value;
+    }
+
+    public string Peek()
+    {
+        return _array[_pointer - 1];
+    }
+    
+    public int Count()
+    {
+        return _pointer;
     }
 }

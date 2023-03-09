@@ -2,7 +2,7 @@
 
 namespace ConsoleApp2;
 
-public class ArrayList
+public class ArrayList : IEnumerable<string>
 {
     private string[] _array = new String[10];
 
@@ -70,5 +70,18 @@ public class ArrayList
     public int Count()
     {
         return _pointer;
+    }
+
+    public IEnumerator<string> GetEnumerator()
+    {
+        for (int index = 0; index < _pointer; index++)
+        {
+            yield return _array[index];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
