@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ConsoleApp2;
+﻿using ConsoleApp2;
 
 string ReadExpr()
 {
@@ -101,13 +100,19 @@ Queue ToRPN(ArrayList tokens)
     return output;
 }
 
-string input = ReadExpr();
-ArrayList tokens = Tokenize(input);
-// Console.WriteLine(string.Join("|", tokens));
-Queue rpnTokens = ToRPN(tokens);
-Console.WriteLine(LetsCount(rpnTokens));
-
-
+bool work = true;
+while (work)
+{
+    string input = ReadExpr();
+    ArrayList tokens = Tokenize(input);
+    Queue rpnTokens = ToRPN(tokens);
+    Console.WriteLine(LetsCount(rpnTokens));
+    Console.Write("Continue?: ");
+    if (Console.ReadLine() == "No")
+    {
+        work = false;
+    }
+}
 
 
 string LetsCount(Queue notation)
