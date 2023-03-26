@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp2;
+﻿using System.Collections;
+
+namespace ConsoleApp2;
 
 public class Queue
 {

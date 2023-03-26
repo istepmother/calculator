@@ -1,4 +1,5 @@
-﻿using ConsoleApp2;
+﻿using System.ComponentModel.DataAnnotations;
+using ConsoleApp2;
 
 string ReadExpr()
 {
@@ -51,13 +52,11 @@ int Precedence(string token)
     switch (token)
     {
         case "-" or "+":
-            return 2;
-        case "*" or "/":
-            return 3;
-        case "^":
-            return 4;
-        default:
             return 0;
+        case "*" or "/":
+            return 1;
+        default:
+            return 2;
     }
 }
 
@@ -70,11 +69,12 @@ Queue ToRPN(ArrayList tokens)
         if (int.TryParse(token, out _)) {output.Push(token);}
         else if (IsOperator(token))
         {
-            while (operators.Count() > 0 && operators.Peek() != "(" && 
-                   (Precedence(operators.Peek()) > Precedence(token)|| 
-                    Precedence(operators.Peek()) == Precedence(token)))
+            while (operators.Count() > 0 && Precedence(operators.Peek()) >= Precedence(token))
             {
-                output.Push(operators.Pop());
+                if (operators.Peek() != "(")
+                {
+                    output.Push(operators.Pop());
+                } else break;
             }
             operators.Push(token);
         }
@@ -93,12 +93,69 @@ Queue ToRPN(ArrayList tokens)
 
     }
 
+    while (! (operators.Count() == 0))
+    {
+        output.Push(operators.Pop());
+    }
+
     return output;
 }
 
-
 string input = ReadExpr();
 ArrayList tokens = Tokenize(input);
-Console.WriteLine(string.Join("|", tokens));
+// Console.WriteLine(string.Join("|", tokens));
 Queue rpnTokens = ToRPN(tokens);
-while(rpnTokens.Count() > 0) {Console.WriteLine(rpnTokens.Pop());}
+Console.WriteLine(LetsCount(rpnTokens));
+
+
+
+
+string LetsCount(Queue notation)
+ {
+     Stack calculated = new Stack();
+
+     while(notation.Count() > 0)
+     {
+         string token = notation.Pop();
+         if (int.TryParse(token, out _))
+         {
+             calculated.Push(token);
+         }
+         else
+         {
+             var num2 = calculated.Pop();
+             var num1 = calculated.Pop(); 
+             calculated.Push(count(num1, num2, token));
+         }
+     }
+
+     string result = calculated.Pop();
+     return result;
+ }
+
+string count(string firstNum, string secondNum, string oper)
+{
+    double result = 0;
+    switch (oper)
+    {
+        case "+":
+            result = double.Parse(firstNum) + double.Parse(secondNum);
+            break;
+        case "-":
+            result = double.Parse(firstNum) - double.Parse(secondNum);
+            break;
+        case "/":
+            result = double.Parse(firstNum) / double.Parse(secondNum);
+            break;
+        case "*":
+            result = double.Parse(firstNum) * double.Parse(secondNum);
+            break;
+        case "^":
+            result = Math.Pow(double.Parse(firstNum), double.Parse(secondNum));
+            break;
+        default:
+            throw new Exception("Illegal operation");
+    }
+
+    return result.ToString();
+}
